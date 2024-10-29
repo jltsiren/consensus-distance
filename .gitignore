@@ -1,35 +1,22 @@
-# Prerequisites
+# Dependencies, objects, and libraries
 *.d
-
-# Compiled Object files
-*.slo
-*.lo
 *.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
 *.a
-*.lib
 
-# Executables
-*.exe
-*.out
-*.app
+# Build directories
+bin
+lib
+obj
+build
 
-# Build stuff
-/cmake-build-debug
+# Mac
+.DS_Store
+
+# emacs
+*~
+
+# vim
+\#*
+
+# vscode
+.vscode
