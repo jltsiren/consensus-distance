@@ -17,7 +17,7 @@ ifeq ($(shell uname -s), Darwin)
         $(info The compiler is Apple Clang that needs libomp for OpenMP support.)
 
         # The compiler only needs to do the preprocessing.
-        PARALLEL_FLAGS = -Xpreprocessor -fopenmp -pthread
+        PARALLEL_FLAGS=-Xpreprocessor -fopenmp -pthread
 
         # Find libomp installed by Homebrew or MacPorts.
         ifeq ($(shell if [ -e $(HOMEBREW_PREFIX)/include/omp.h ]; then echo 1; else echo 0; fi), 1)
@@ -47,7 +47,7 @@ HEADERS=$(wildcard include/consensus_distance/*.h)
 LIBOBJS=$(addprefix $(BUILD_OBJ)/,paths_prefix_sum_arrays.o pruned_graph.o)
 LIBRARY=$(BUILD_LIB)/libcdist.a
 
-PROGRAMS=$(addprefix $(BUILD_BIN)/,test)
+PROGRAMS=$(addprefix $(BUILD_BIN)/,distances test)
 
 .PHONY: all clean directories
 all: directories $(LIBRARY) $(PROGRAMS)

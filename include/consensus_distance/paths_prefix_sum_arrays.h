@@ -30,9 +30,8 @@
 #include <handlegraph/mutable_handle_graph.hpp>
 #include <handlegraph/mutable_path_deletable_handle_graph.hpp>
 
-#include "gtest/gtest.h"
 //TEST
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 /**
  * This class represent the paths' prefix sum arrays.
  */

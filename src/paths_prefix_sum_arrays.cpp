@@ -31,10 +31,12 @@ void stamparrei(std::vector<size_t> mauro){
 PathsPrefixSumArrays::PathsPrefixSumArrays(): fast_locate(nullptr) {}
 
 
-PathsPrefixSumArrays::PathsPrefixSumArrays(gbwtgraph::GBWTGraph &gbwtGraph){
-   
+PathsPrefixSumArrays::PathsPrefixSumArrays(gbwtgraph::GBWTGraph &gbwtGraph) :
+    fast_locate(), prefix_sum_arrays(gbwtGraph.index->sequences() / 2) {
+
     // Create prefix sum array new data structure
     //std::vector<std::shared_ptr<sdsl::sd_vector<>>> prefix_sum_arrays;
+    #pragma omp parallel for schedule(dynamic, 1)
     for(gbwt::size_type i = 0; i < (gbwtGraph.index)->sequences(); i += 2) {
         // += 2 because the id of the paths is multiple of two, every path has its reverse path and in GBWTGraph this
         // is the representation
@@ -46,21 +48,18 @@ PathsPrefixSumArrays::PathsPrefixSumArrays(gbwtgraph::GBWTGraph &gbwtGraph){
             offset += length_of_node;
         }
 
-
-        sdsl::bit_vector psa_temp(offset+1,0);
-
-        offset =0;
+        sdsl::sd_vector_builder builder(offset + 1, path.size());
+        offset = 0;
         for(gbwt::size_type j = 0; j < path.size(); ++j) {
             gbwt::size_type length_of_node = gbwtGraph.get_length( gbwtGraph.node_to_handle(path[j]));
             offset += length_of_node;
-            psa_temp[offset] = 1;
+            builder.set_unsafe(offset);
         }
-
-        prefix_sum_arrays.push_back(std::shared_ptr<sdsl::sd_vector<>>{new sdsl::sd_vector<>(psa_temp)});
+        this->prefix_sum_arrays[i / 2].reset(new sdsl::sd_vector<>(builder));
     }
 
     // Create the fast locate
-    fast_locate.reset(new gbwt::FastLocate(*gbwtGraph.index));
+    this->fast_locate.reset(new gbwt::FastLocate(*gbwtGraph.index));
 }
 
 
